@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="ain.dom.no" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>You are a space person.</name>
+    <description>
+        You are a space person.
+    </description>
+    <author email="andrew@dirksen.com" href="">
+        Andrew Dirksen
+    </author>
+    <content src="index.html" />
+    <plugin name="cordova-plugin-whitelist" spec="1" />
+    <access origin="*" />
+    <platform name="android">
+    </platform>
+    <platform name="ios">
+    </platform>
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="fullscreen" value="true" />
+    <icon src="res/icon.png"/>
+</widget>

@@ -1,0 +1,26 @@
+{
+  "name": "you-are-a-space-person",
+  "version": "1.0.0",
+  "description": "Mobile app. 0g 3d multitouch maneuvering.",
+  "main": "index.js",
+  "scripts": {
+    "start": "./go"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bddap/you-are-a-space-person.git"
+  },
+  "keywords": [
+    "space",
+    "newton"
+  ],
+  "author": "Andrew Dirksen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bddap/you-are-a-space-person/issues"
+  },
+  "dependencies": {
+    "three": "^0.75.0"
+  },
+  "homepage": "https://github.com/bddap/you-are-a-space-person#readme"
+}
