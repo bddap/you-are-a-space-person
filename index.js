@@ -1,20 +1,18 @@
-"use strict"
+
 {
   let T = require('three');
+  let textures = require('./src/textures.js');
+  var controls = require('./src/controls.js');
 
-  let f = () => {console.log("pants")}
-  f()
 
   var camera, scene, renderer;
 	var mesh;
-	init();
-	animate();
 	function init() {
-		camera = new T.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
-		camera.position.z = 400;
+		camera = new T.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		camera.position.z = 1;
 		scene = new T.Scene();
-		var texture = new T.TextureLoader().load( 'crate.gif' );
-		var geometry = new T.BoxBufferGeometry( 200, 200, 200 );
+		var texture = textures.crate;
+		var geometry = new T.BoxBufferGeometry( 1, 1, 1 );
 		var material = new T.MeshBasicMaterial( { map: texture } );
 		mesh = new T.Mesh( geometry, material );
 		scene.add( mesh );
@@ -32,9 +30,11 @@
 	}
 	function animate() {
 		requestAnimationFrame( animate );
-		mesh.rotation.x += 0.005;
-		mesh.rotation.y += 0.01;
 		renderer.render( scene, camera );
 	}
+
+	init();
+	animate();
+  controls.bind(renderer.domElement);
 
 }

@@ -1,46 +1,52 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-"use strict"
+'use strict';
+
 {
-  let T = require('three');
-
-  let f = () => {console.log("pants")}
-  f()
-
-  var camera, scene, renderer;
+	var controls;
+	var camera, scene, renderer;
 	var mesh;
-	init();
-	animate();
-	function init() {
-		camera = new T.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
-		camera.position.z = 400;
-		scene = new T.Scene();
-		var texture = new T.TextureLoader().load( 'crate.gif' );
-		var geometry = new T.BoxBufferGeometry( 200, 200, 200 );
-		var material = new T.MeshBasicMaterial( { map: texture } );
-		mesh = new T.Mesh( geometry, material );
-		scene.add( mesh );
-		renderer = new T.WebGLRenderer();
-		renderer.setPixelRatio( window.devicePixelRatio );
-		renderer.setSize( window.innerWidth, window.innerHeight );
-		document.body.appendChild( renderer.domElement );
-		//
-		window.addEventListener( 'resize', onWindowResize, false );
-	}
-	function onWindowResize() {
-		camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-		renderer.setSize( window.innerWidth, window.innerHeight );
-	}
-	function animate() {
-		requestAnimationFrame( animate );
-		mesh.rotation.x += 0.005;
-		mesh.rotation.y += 0.01;
-		renderer.render( scene, camera );
-	}
 
+	(function () {
+		var init = function init() {
+			camera = new T.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+			camera.position.z = 1;
+			scene = new T.Scene();
+			var texture = textures.crate;
+			var geometry = new T.BoxBufferGeometry(1, 1, 1);
+			var material = new T.MeshBasicMaterial({ map: texture });
+			mesh = new T.Mesh(geometry, material);
+			scene.add(mesh);
+			renderer = new T.WebGLRenderer();
+			renderer.setPixelRatio(window.devicePixelRatio);
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			document.body.appendChild(renderer.domElement);
+			//
+			window.addEventListener('resize', onWindowResize, false);
+		};
+
+		var onWindowResize = function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+		};
+
+		var animate = function animate() {
+			requestAnimationFrame(animate);
+			renderer.render(scene, camera);
+		};
+
+		var T = require('three');
+		var textures = require('./src/textures.js');
+		controls = require('./src/controls.js');
+
+
+		init();
+		animate();
+		controls.bind(renderer.domElement);
+	})();
 }
 
-},{"three":2}],2:[function(require,module,exports){
+},{"./src/controls.js":3,"./src/textures.js":4,"three":2}],2:[function(require,module,exports){
 var self = self || {};// File:src/Three.js
 
 /**
@@ -40723,4 +40729,34 @@ if (typeof exports !== 'undefined') {
   this['THREE'] = THREE;
 }
 
-},{}]},{},[1]);
+},{}],3:[function(require,module,exports){
+'use strict';
+
+module.exports.bind = function (domel) {
+  var touchstart = function touchstart(event) {
+    for (var k in event) {
+      console.log(k + ':' + event[k]);
+    }
+  };
+
+  var touchmove = function touchmove(event) {};
+
+  var touchend = function touchend(event) {};
+
+  domel.addEventListener('touchstart', touchstart, false);
+  domel.addEventListener('touchmove', touchmove, false);
+  domel.addEventListener('touchend', touchend, false);
+};
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+var T = require('three');
+
+var tl = new T.TextureLoader();
+
+module.exports = {
+  crate: tl.load('crate.gif')
+};
+
+},{"three":2}]},{},[1]);

@@ -1,4 +1,7 @@
-browserify index.js -o cordova/www/index.js \
+
+rm cordova/www/index.js
+
+gulp \
 &&\
 cd cordova \
 &&\

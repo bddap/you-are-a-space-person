@@ -16,5 +16,6 @@
     <access origin="*" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="fullscreen" value="true" />
+    <preference name="Orientation" value="landscape" />
     <icon src="res/icon.png" />
 </widget>
