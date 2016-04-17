@@ -3,7 +3,7 @@ let _ = require('underscore');
 
 let pr = x => console.log(JSON.stringify(x));
 
-module.exports.bind = (domel, camera) => {
+module.exports.bind = () => {
   let touches = [];
 
   let delta = (t0,t1) => {
@@ -30,10 +30,10 @@ module.exports.bind = (domel, camera) => {
 
   }
 
-  domel.addEventListener('touchstart',touchstart,false);
-  domel.addEventListener('touchmove',touchmove,false);
-  domel.addEventListener('touchend',touchend,false);
-  domel.addEventListener('touchcancel',touchcancel,false);
+  //domel.addEventListener('touchstart',touchstart,false);
+  //domel.addEventListener('touchmove',touchmove,false);
+  //domel.addEventListener('touchend',touchend,false);
+  //domel.addEventListener('touchcancel',touchcancel,false);
 
   //domel.onmousemove = e=>console.log(e);
 }

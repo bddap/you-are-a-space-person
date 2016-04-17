@@ -1,7 +1,5 @@
 {
   let T = require('three');
-  let S = require('./satellite.js');
-  let textures = require('./textures.js');
 
   let camera, scene, renderer;
 	let mesh;
@@ -10,16 +8,11 @@
 		camera.position.z = 2;
     camera.rotateY(0.01);
 		scene = new T.Scene();
-		let texture = textures.crate;
-		let geometry = new T.BoxBufferGeometry( 1, 1, 1 );
-		let material = new T.MeshBasicMaterial( { map: texture } );
-		mesh = new T.Mesh( geometry, material );
-		scene.add( mesh );
-		renderer = new T.WebGLRenderer();
+		renderer = new T.WebGLRenderer({
+      canvas : document.getElementById('canvas')
+    });
 		renderer.setPixelRatio( window.devicePixelRatio );
-		renderer.setSize( window.innerWidth, window.innerHeight );
-		document.body.appendChild( renderer.domElement );
-		//
+    onWindowResize();
 		window.addEventListener( 'resize', onWindowResize, false );
 	}
 	function onWindowResize() {
@@ -30,21 +23,27 @@
 
 	init();
 
-  let world = {
-    camera : S.Sat()
-  };
+  let state = {sats:[]};
+  let setstate = (s) => {state=s;};
+
+  let q = new T.Quaternion();
+
+  let time = () => Date.now() / 1000;
 
 	function animate() {
+    let t = time();
+    state.sats.forEach((s)=>{
+      s.update(t);
+    });
 		requestAnimationFrame( animate );
 		renderer.render( scene, camera );
-    camera.rotateZ(0.001);
-    mesh.rotateY(0.01);
 	}
 
+  document.addEventListener('load',onWindowResize,false);
 	animate();
 
   module.exports = {
-    domElement : renderer.domElement,
-    world : world
+    scene : scene,
+    setstate : setstate
   };
 }
