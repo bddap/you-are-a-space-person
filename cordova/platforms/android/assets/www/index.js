@@ -10,7 +10,7 @@ var bacon = require('baconjs');
 
 var you_are_a_space_person = function you_are_a_space_person(state, user_input) {
   state.time = user_input.time;
-  S.Sat(state);
+
   return state;
 };
 
@@ -21,8 +21,11 @@ var time = function time() {
 var initial_state = {
   scene: rendering.scene,
   sats: [],
-  time: time()
+  time: time(),
+  fingers: []
 };
+
+S.Sat(initial_state);
 
 bacon.fromEvent(document.getElementById('canvas'), 'click').map(function (x) {
   return { e: x, time: time() };
@@ -44185,13 +44188,17 @@ var C = require('./textures');
 
 var Sat = function Sat(state) {
   var geometry = new T.BoxBufferGeometry(1, 1, 1);
-  var material = new T.MeshBasicMaterial({ map: C.crate });
+  var material = new T.MeshBasicMaterial({ map:
+    //C.crate
+    //C.colors[0]
+    C.colors[Math.floor(Math.random() * C.colors.length)]
+  });
   var mesh = new T.Mesh(geometry, material);
   mesh.rotationAutoUpdate = false;
   state.scene.add(mesh);
 
   var pos = new T.Vector3(0, 0, 0);
-  var vel = new T.Vector3(0.1, 0.1, 0.1);
+  var vel = new T.Vector3(0, 0, 0);
   var rot = new T.Quaternion();
   var rov = { axis: new T.Vector3(1, 0, 0), angle: 0.0 };
   var epoch = state.time;
@@ -44229,13 +44236,28 @@ var T = require('three');
 
 var tl = new T.TextureLoader();
 
-var pallet = [[70, 166, 157], //46a69
-[105, 24, 106], //69186a
-[201, 79, 25], //c94f19
-[77, 123, 88], //4d7b58
-[255, 232, 84]];
+var pallet = [[135, 180, 201], [179, 130, 114], [133, 99, 113], [0, 62, 156]];
 
-//ffe854
+var w = 8;
+var mag = function mag(vec) {
+  return Math.sqrt(vec.map(function (v) {
+    return Math.pow(v, 2);
+  }).reduce(function (a, b) {
+    return a + b;
+  }));
+};
+var rad = function rad(x, y) {
+  return mag([x, y].map(function (a) {
+    return a + 0.5 - w / 2;
+  })) / w / 2;
+};
+var clamp = function clamp(n, mi, ma) {
+  return Math.max(mi, Math.min(n, ma));
+};
+var cby = function cby(n) {
+  return clamp(n, 0, 255);
+};
+
 var ts = pallet.map(function (_ref) {
   var _ref2 = _slicedToArray(_ref, 4);
 
@@ -44245,19 +44267,38 @@ var ts = pallet.map(function (_ref) {
   var _ref2$ = _ref2[3];
   var a = _ref2$ === undefined ? 255 : _ref2$;
 
-  var d = new Uint8Array(4 * 4 * 4);
-  for (var i = 0; i < 4 * 4 * 4; i += 4) {
-    var _ref3 = [r, g, b, a];
-    d[i + 0] = _ref3[0];
-    d[i + 1] = _ref3[1];
-    d[i + 2] = _ref3[2];
-    d[i + 3] = _ref3[3];
+  var d = new Uint8Array(w * w * 4);
+  for (var y = 0; y < w; y++) {
+    for (var x = 0; x < w; x++) {
+      var i = (y * w + x) * 4;
+      //.map(l=>clamp(l-r*64+32,0,255));
+      var _ref3 = [r, g, b];
+      d[i + 0] = _ref3[0];
+      d[i + 1] = _ref3[1];
+      d[i + 2] = _ref3[2];
+      d[i + 3] = a;
+      if ([x, y].some(function (a) {
+        return a == 0 | a == w - 1;
+      })) {
+        var _map = [d[i + 0], d[i + 1], d[i + 2]].map(function (a) {
+          return cby(a - 32);
+        });
+
+        var _map2 = _slicedToArray(_map, 3);
+
+        d[i + 0] = _map2[0];
+        d[i + 1] = _map2[1];
+        d[i + 2] = _map2[2];
+      }
+    }
   }
-  var t = new T.DataTexture(d, 4, 4, T.RGBAFormat);
+  var t = new T.DataTexture(d, w, w, T.RGBAFormat);
+  t.needsUpdate = true;
   return t;
 });
 
 module.exports = {
+  colors: ts,
   crate: tl.load('crate.gif')
 };
 

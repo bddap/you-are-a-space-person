@@ -8,7 +8,7 @@ let bacon = require('baconjs');
 
 let you_are_a_space_person = (state, user_input) => {
   state.time = user_input.time;
-  S.Sat(state);
+
   return state;
 };
 
@@ -17,8 +17,11 @@ let time = () => Date.now() / 1000;
 let initial_state = {
   scene : rendering.scene,
   sats : [],
-  time : time()
+  time : time(),
+  fingers : []
 };
+
+S.Sat(initial_state);
 
 bacon.fromEvent(document.getElementById('canvas'), 'click')
     .map(x=>{return {e:x,time:time()};})

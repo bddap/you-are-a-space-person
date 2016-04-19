@@ -3,7 +3,11 @@ let C = require('./textures');
 
 let Sat = (state) => {
   let geometry = new T.BoxBufferGeometry( 1, 1, 1 );
-  let material = new T.MeshBasicMaterial( { map: C.crate } );
+  let material = new T.MeshBasicMaterial( { map:
+    //C.crate
+    //C.colors[0]
+    C.colors[Math.floor(Math.random() * C.colors.length)]
+  } );
   let mesh = new T.Mesh( geometry, material );
   mesh.rotationAutoUpdate = false;
   state.scene.add( mesh );
