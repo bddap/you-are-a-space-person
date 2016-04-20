@@ -33,8 +33,31 @@ let Sat = (state) => {
     urot(time);
   }
 
+  let force = (time, vec) => {
+    update(time)
+    pos.copy( mesh.position )
+    rot.copy( mesh.quaternion )
+    epoch = time
+    vel.add(vec)
+  }
+
+  let add = item => {
+    mesh.add(item)
+  }
+
+  let teleport = (time, vec) => {
+    update(time)
+    pos.copy( mesh.position )
+    rot.copy( mesh.quaternion )
+    epoch = time
+    pos.copy(vec)
+  }
+
   state.sats.push({
-    update : update
+    update : update,
+    force : force,
+    add : add,
+    teleport : teleport
   });
 }
 

@@ -5,8 +5,6 @@
 	let mesh;
 	function init() {
 		camera = new T.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
-		camera.position.z = 2;
-    camera.rotateY(0.01);
 		scene = new T.Scene();
 		renderer = new T.WebGLRenderer({
       canvas : document.getElementById('canvas')
@@ -42,8 +40,13 @@
   document.addEventListener('load',onWindowResize,false);
 	animate();
 
+  let attach_cam = sat => {
+    sat.add(camera);
+  }
+
   module.exports = {
     scene : scene,
-    setstate : setstate
+    setstate : setstate,
+    attach_cam : attach_cam
   };
 }
